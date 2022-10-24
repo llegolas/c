@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-unsigned int min_i (unsigned int a, unsigned int b, unsigned int c) {
+int min3 (int a, int b, int c) {
     if (a <= b && a <= c)
         return a;
     else if (b < a && b < c)
@@ -11,8 +11,12 @@ unsigned int min_i (unsigned int a, unsigned int b, unsigned int c) {
         return c;
 }
 
+int min (int a, int b) {
+    return (a > b) ? b : a;
+}
+
 int levenstein (char *token1, char *token2) {
-    unsigned int len_token1, len_token2, x, y, cur, prev;
+    unsigned int len_token1, len_token2, x, y, cur, prev, prevprev;
 
     if (strcmp(token1,token2) == 0)
         return 0;    
@@ -29,7 +33,12 @@ int levenstein (char *token1, char *token2) {
         cur = x - 1;
         for (y = 1; y <= len_token1; y++) {
             prev = column[y];
-            column[y] = min_i(column[y] + 1, column[y - 1] + 1, cur + (token1[y-1] == token2[x - 1] ? 0 : 1));
+            column[y] = min3(column[y] + 1, column[y - 1] + 1, cur + (token1[y-1] == token2[x - 1] ? 0 : 1));
+            
+            if (x > 1 && y >1 && token1[x-2] == token2[y-1] && token1[x-1] == token2[y-2]) 
+                column[y] = min(column[y-1], prevprev + 1 );
+            
+            prevprev = prev;
             cur = prev;
         }
     }
