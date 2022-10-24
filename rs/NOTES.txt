@@ -1,0 +1,8 @@
+# encode the file. this add Reed-Solomon parity data to it
+./rs_enc -i test_file.txt -o test_file_encoded.txt
+# corupt test_file_encoded.txt with vi in binary mode for example
+# vi -b test_file_encoded.txt
+# decode the file
+./rs_dec -i test_file_encoded.txt -o test_file_decoded.txt
+# compare the initial an the recovered/decoded file
+# sha256sum test_file_decoded.txt test_file.txt
